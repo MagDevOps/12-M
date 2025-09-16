@@ -85,7 +85,15 @@ function App() {
 
   const handleSelectActivity = useCallback((categoryType: CategoryType, goalId: string) => {
     setSelectedCategory(categoryType);
-  }, []);
+
+    if (!currentUser) {
+      setSelectedGoal(null);
+      return;
+    }
+
+    const goalForActivity = currentUser.categories[categoryType]?.goals.find(goalItem => goalItem.id === goalId) ?? null;
+    setSelectedGoal(goalForActivity);
+  }, [currentUser]);
 
   const handleLogout = useCallback(() => {
     setCurrentUser(null);
